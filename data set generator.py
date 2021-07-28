@@ -1,4 +1,3 @@
-
 import warnings
 import numpy as np
 import cv2
@@ -26,6 +25,7 @@ def cal_accum_avg(frame, accumulated_weight):
 
 
 def segment_hand(frame, threshold=25):
+    
     global background
     
     diff = cv2.absdiff(background.astype("uint8"), frame)
@@ -48,7 +48,7 @@ def segment_hand(frame, threshold=25):
 cam = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 
 num_frames = 0
-element = 10
+element = "zero"
 num_imgs_taken = 0
 
 while True:
@@ -71,7 +71,7 @@ while True:
             cv2.putText(frame_copy, "FETCHING BACKGROUND...PLEASE WAIT",(80, 400), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,255), 2)
             
     #Time to configure the hand specifically into the ROI...
-    elif num_frames <= 300: 
+    elif num_frames <= 100 : 
 
         hand = segment_hand(gray_frame)
         
@@ -116,10 +116,11 @@ while True:
             
             # Displaying the thresholded image
             cv2.imshow("Thresholded Hand Image", thresholded)
-            if num_imgs_taken <= 300:
-                st = "train/"+ str(element)  +str(num_imgs_taken + 300)
+            if num_imgs_taken <= 100:
+                st = "train/"+ str(element)+ "/" +str(num_imgs_taken + 100)
                 st = st+".png"
-                cv2.imwrite(st, thresholded)
+                print(st)
+                print(cv2.imwrite(st, thresholded))
                 
             else:
                 break
@@ -137,7 +138,7 @@ while True:
     
     # increment the number of frames for tracking
     num_frames += 1
-
+ 
     # Display the frame with segmented hand
     cv2.imshow("Sign Detection", frame_copy)
 
@@ -145,11 +146,11 @@ while True:
     k = cv2.waitKey(1) & 0xFF
 
     if k == 27:
-        break
+        break 
+    
+
 
 # Releasing the camera & destroying all the windows...
 
 cv2.destroyAllWindows()
 cam.release()
-    
-    

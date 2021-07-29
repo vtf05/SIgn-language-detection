@@ -48,7 +48,7 @@ def segment_hand(frame, threshold=25):
 cam = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 
 num_frames = 0
-element = "zero"
+element = "q"
 num_imgs_taken = 0
 
 while True:
@@ -71,7 +71,7 @@ while True:
             cv2.putText(frame_copy, "FETCHING BACKGROUND...PLEASE WAIT",(80, 400), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,255), 2)
             
     #Time to configure the hand specifically into the ROI...
-    elif num_frames <= 100 : 
+    elif num_frames <= 300 : 
 
         hand = segment_hand(gray_frame)
         
@@ -117,7 +117,7 @@ while True:
             # Displaying the thresholded image
             cv2.imshow("Thresholded Hand Image", thresholded)
             if num_imgs_taken <= 100:
-                st = "train/"+ str(element)+ "/" +str(num_imgs_taken + 100)
+                st = "train/"+ str(element)+ "/" +str(num_imgs_taken + 300)
                 st = st+".png"
                 print(st)
                 print(cv2.imwrite(st, thresholded))
